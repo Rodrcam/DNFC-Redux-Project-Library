@@ -1,56 +1,52 @@
 using System;
 using MelonLoader;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DNFC_Redux_Library
 {
     /// <summary>
-    /// Utility class for basic utilities like fetching components and objects
+    /// Utility class for basic utilities like fetching components and GameObjects.
     /// </summary>
-    public class Util: MelonMod
+    public class Util
     {
         /// <summary>
-        /// Attemtps to fetch component from a gameObject from the hierarchy.
+        /// Attempts to fetch a component by name from a named GameObject in the hierarchy.
         /// </summary>
-        /// <param name="gameObjectName"> Name of Object to search for</param>
-        /// <param name="componentName"> Name of component to get</param>
-        /// <param name="component"> When this method returns, contains the component or <c>null</c> if not found</param>
-        /// <returns><c>true</c> if component was found, otherwise returns <c>false</c></returns>
+        /// <param name="gameObjectName">Name of the GameObject to search for.</param>
+        /// <param name="componentName">Name of the component to get.</param>
+        /// <param name="component">When this method returns, contains the component or <c>null</c> if not found.</param>
+        /// <returns><c>true</c> if the component was found; otherwise <c>false</c>.</returns>
         internal bool TryFetchComponentFromGameObj(string gameObjectName, string componentName, out Component component)
         {
             component = null;
             try
             {
-                MelonLogger.Msg($"Attempting to find {gameObjectName} GameObject...");
+                MelonLogger.Msg($"Attempting to find GameObject '{gameObjectName}'...");
                 GameObject gameObject = GameObject.Find(gameObjectName);
-
                 if (gameObject == null)
                 {
-                    MelonLogger.Msg($"No game object with name {gameObjectName} was found.");
+                    MelonLogger.Msg($"No GameObject with name '{gameObjectName}' was found.");
                     return false;
                 }
 
-                MelonLogger.Msg($"Found game object with name: {gameObjectName}.");
-                MelonLogger.Msg($"Attempting to find {componentName} component on {gameObjectName}...");
-
+                MelonLogger.Msg($"Found GameObject '{gameObjectName}'. Searching for component '{componentName}'...");
                 component = gameObject.GetComponent(componentName);
                 if (component == null)
                 {
-                    MelonLogger.Msg($"No component with name {componentName} found on {gameObjectName}");
+                    MelonLogger.Msg($"No component '{componentName}' found on '{gameObjectName}'.");
                     return false;
                 }
-                
-                MelonLogger.Msg($"Found component with name: {componentName}");
-                return false;
+
+                MelonLogger.Msg($"Found component '{componentName}' on '{gameObjectName}'.");
+                return true; // Fixed: was incorrectly returning false on success.
             }
             catch (Exception ex)
             {
-                MelonLogger.Msg($"Error fetching component {componentName} on {gameObjectName}: {ex.Message}");
+                MelonLogger.Msg($"Error fetching component '{componentName}' on '{gameObjectName}': {ex.Message}");
                 return false;
             }
         }
-        
+
         /// <summary>
         /// Attempts to find a GameObject by name in the scene hierarchy.
         /// </summary>
@@ -62,11 +58,12 @@ namespace DNFC_Redux_Library
             gameObject = GameObject.Find(gameObjectName);
             if (gameObject == null)
             {
-                MelonLogger.Msg($"No game object with name {gameObjectName} was found. Returning false + null.");
+                MelonLogger.Msg($"No GameObject with name '{gameObjectName}' was found.");
                 return false;
             }
+
+            MelonLogger.Msg($"Found GameObject '{gameObjectName}'.");
             return true;
         }
-        
     }
 }

@@ -35,7 +35,7 @@ namespace DNFC_Redux_Library
                 for (int i = 0; i < SharedData.Workers.Count; i++)
                 {
                     GameObject worker = SharedData.Workers[i];
-                    string workerName = (worker.name).Substring(17, worker.name.Length); 
+                    string workerName = (worker.name).Substring(17, worker.name.Length - 17); 
                     MelonLogger.Msg("Checking Worker " + i + ": " + workerName);
                     //Component characterComponent = worker.GetComponent($"Character{workerName)");
                     //if (characterComponent != null)

@@ -1,10 +1,9 @@
-using MelonLoader;
-using UnityEngine;
 namespace DNFC_Redux_Library
 {
-    public class EconomyLibrary : MelonMod
+    /// <summary>
+    /// Library class for economy-related mod functionality.
+    /// </summary>
+    public class EconomyLib
     {
-
-        
     }
 }

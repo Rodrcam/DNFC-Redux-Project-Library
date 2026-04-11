@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace DNFC_Redux_Library
@@ -8,11 +7,23 @@ namespace DNFC_Redux_Library
     /// </summary>
     public class SharedData
     {
-        public SceneState SceneState {get; set;}
-        public bool IsInitialized { get; set; }
+        public SceneState SceneState { get; set; }
+
+        // Private set — IsInitialized should only be controlled by SharedDataHandler.
+        public bool IsInitialized { get; private set; }
+
         public Component SettingsManager { get; set; }
         public GameObject CharactersInUse { get; set; }
         public Component ProgressionCoordinator { get; set; }
+
+        /// <summary>
+        /// Marks the data as successfully initialized.
+        /// Only callable from within the library assembly.
+        /// </summary>
+        internal void MarkInitialized()
+        {
+            IsInitialized = true;
+        }
     }
 
     public enum SceneState
@@ -21,5 +32,4 @@ namespace DNFC_Redux_Library
         Loading,
         InGame,
     }
-    
 }
