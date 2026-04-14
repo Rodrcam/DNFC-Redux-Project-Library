@@ -31,6 +31,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>libs\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>libs\Il2CppInterop.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2Cpp">
+      <HintPath>libs\Il2Cpp.dll</HintPath>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>libs\Assembly-CSharp.dll</HintPath>
     </Reference>
@@ -65,6 +74,9 @@
     <Content Include="libs\UnityEngine.CoreModule.dll" />
     <Content Include="libs\UnityEngine.dll" />
     <Content Include="libs\UnityEngine.InputLegacyModule.dll" />
+    <Content Include="libs\0Harmony.dll" />
+    <Content Include="libs\Il2CppInterop.Runtime.dll" />
+    <Content Include="libs\Il2Cpp.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
