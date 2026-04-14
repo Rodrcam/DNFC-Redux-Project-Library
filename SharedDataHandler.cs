@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace DNFC_Redux_Library
+
+    // Comment to test discord bot
 {
     public class SharedDataHandler
     {
