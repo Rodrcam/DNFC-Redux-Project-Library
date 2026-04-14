@@ -21,28 +21,29 @@ namespace DNFC_Redux_Library
             component = null;
             try
             {
-                MelonLogger.Msg($"Attempting to find GameObject '{gameObjectName}'...");
+                LogMessage($"Attempting to find GameObject '{gameObjectName}'...");
                 GameObject gameObject = GameObject.Find(gameObjectName);
                 if (gameObject == null)
                 {
-                    MelonLogger.Msg($"No GameObject with name '{gameObjectName}' was found.");
+                    LogWarning($"No GameObject with name '{gameObjectName}' was found.");
                     return false;
                 }
 
-                MelonLogger.Msg($"Found GameObject '{gameObjectName}'. Searching for component '{componentName}'...");
+                LogMessage($"Found GameObject '{gameObjectName}'. Searching for component '{componentName}'...");
                 component = gameObject.GetComponent(componentName);
+                
                 if (component == null)
                 {
-                    MelonLogger.Msg($"No component '{componentName}' found on '{gameObjectName}'.");
+                    LogWarning($"No component '{componentName}' found on '{gameObjectName}'.");
                     return false;
                 }
 
-                MelonLogger.Msg($"Found component '{componentName}' on '{gameObjectName}'.");
-                return true; // Fixed: was incorrectly returning false on success.
+                LogMessage($"Found component '{componentName}' on '{gameObjectName}'.");
+                return true;
             }
             catch (Exception ex)
             {
-                MelonLogger.Msg($"Error fetching component '{componentName}' on '{gameObjectName}': {ex.Message}");
+                LogError($"Error fetching component '{componentName}' on '{gameObjectName}': {ex.Message}", ex);
                 return false;
             }
         }
@@ -53,17 +54,61 @@ namespace DNFC_Redux_Library
         /// <param name="gameObjectName">Name of the GameObject to find.</param>
         /// <param name="gameObject">When this method returns, contains the found GameObject, or <c>null</c> if not found.</param>
         /// <returns><c>true</c> if the GameObject was found; otherwise <c>false</c>.</returns>
-        public bool TryFetchGameObjectFromHierarchy(string gameObjectName, out GameObject gameObject)
+        internal bool TryFetchGameObjectFromHierarchy(string gameObjectName, out GameObject gameObject)
         {
-            gameObject = GameObject.Find(gameObjectName);
-            if (gameObject == null)
+            try
             {
-                MelonLogger.Msg($"No GameObject with name '{gameObjectName}' was found.");
+                LogMessage($"Attempting to find GameObject '{gameObjectName}'...");
+
+                gameObject = GameObject.Find(gameObjectName);
+                if (gameObject == null)
+                {
+                    LogWarning($"No GameObject with name '{gameObjectName}' was found.");
+                    return false;
+                }
+
+                LogMessage($"Found GameObject '{gameObjectName}'.");
+                return true;
+            }catch(Exception ex)
+            {
+                LogError($"Error fetching Game Object '{gameObjectName}': {ex.Message}", ex);
+                gameObject = null;
                 return false;
             }
+        }
 
-            MelonLogger.Msg($"Found GameObject '{gameObjectName}'.");
-            return true;
+        /// <summary>
+        /// Log a message
+        /// </summary>
+        /// <param name="message">Message to log</param>
+        internal void LogMessage(string message)
+        {
+            MelonLogger.Msg(message);
+        }
+        /// <summary>
+        /// Log a warning message
+        /// </summary>
+        /// <param name="message">Warning message to log</param>
+        internal void LogWarning(string message)
+        {
+            MelonLogger.Warning(message);
+        }
+        /// <summary>
+        /// Log an error message
+        /// </summary>
+        /// <param name="message">Error message to log</param>
+        internal void LogError(string message)
+        {
+            MelonLogger.Error(message);
+        }
+        /// <summary>
+        /// Log an error message with an exception
+        /// </summary>
+        /// <param name="message">Error message to log</param>
+        /// <param name="exception">Exception to log<seealso cref="Exception"/></param>
+        internal void LogError(string message, Exception exception)
+        {
+            MelonLogger.Error(message, exception);
         }
     }
 }

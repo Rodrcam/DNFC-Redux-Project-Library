@@ -32,6 +32,9 @@
         <Reference Include="MelonLoader">
             <HintPath>libs\MelonLoader.dll</HintPath>
         </Reference>
+        <Reference Include="Unity.InputSystem">
+          <HintPath>libs\Unity.InputSystem.dll</HintPath>
+        </Reference>
         <Reference Include="UnityEngine">
             <HintPath>libs\UnityEngine.dll</HintPath>
         </Reference>

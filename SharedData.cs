@@ -12,9 +12,22 @@ namespace DNFC_Redux_Library
         // Private set — IsInitialized should only be controlled by SharedDataHandler.
         public bool IsInitialized { get; private set; }
 
-        public Component SettingsManager { get; set; }
+        public GameObject PlotsContainer { get; set; }
+        public GameObject UICanvas { get; set; }
         public GameObject CharactersInUse { get; set; }
-        public Component ProgressionCoordinator { get; set; }
+        public GameObject VehiclesInUse { get; set; }
+        public Component SettingsManager { get; set; }
+        public Component FireManager { get; set; }
+        public Component BalancingData { get; set; }
+        public Component FacilityManager { get; set; }
+        public Component TimeManager { get; set; }
+        public Component PlayerTier { get; set; }
+        public Component DialogueData { get; set; }
+        public Component StoryManager { get; set; }
+        public Component EndGameManager { get; set; }
+        public Component SpecialClientsCoordinator { get; set; }
+        public Component ProgressionClientsCoordinator { get; set; }
+        public Component MonetaryCycle { get; set; }
 
         /// <summary>
         /// Marks the data as successfully initialized.
