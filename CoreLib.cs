@@ -19,14 +19,6 @@ namespace DNFC_Redux_Library
 
         private static SharedDataHandler _gameState;
 
-        /// <summary>
-        /// Whether Developer Mode is currently active.
-        /// Toggle with Ctrl+Shift+D. Off by default.
-        /// </summary>
-        public static bool DeveloperMode { get; private set; } = false;
-
-        private static SharedDataHandler _gameState;
-
         public override void OnEarlyInitializeMelon()
         {
             Utility = new Util();
@@ -55,18 +47,6 @@ namespace DNFC_Redux_Library
             }
         }
 
-        public override void OnUpdate()
-        {
-            // Enable Developer Mode
-            if (Keyboard.current.ctrlKey.isPressed 
-                && Keyboard.current.shiftKey.isPressed 
-                && Keyboard.current.dKey.wasPressedThisFrame)
-            {
-                DeveloperMode = !DeveloperMode;
-                Utility.LogMessage($"CoreLib: Developer Mode {(DeveloperMode ? "enabled" : "disabled")}.");
-            }
-        }
-
         public override void OnSceneWasInitialized(int buildIndex, string sceneName)
         {
             switch (sceneName)
@@ -90,30 +70,6 @@ namespace DNFC_Redux_Library
             }
 
             Utility.LogMessage($"Scene loaded: {sceneName}, state: {_gameState.Data.SceneState}");
-        }
-
-        /// <summary>
-        /// Returns the current scene state.
-        /// Mods can use this to check whether the player is in game, the main menu, etc.
-        /// </summary>
-        public static SceneState GetSceneState()
-        {
-            return _gameState.Data.SceneState;
-        }
-
-        /// <summary>
-        /// Result of a <see cref="CoreLib.RequestReturnToMainMenu"/> call.
-        /// </summary>
-        public enum ReturnToMainMenuResult
-        {
-            /// <summary>The transition to the main menu was initiated immediately.</summary>
-            Success,
-
-            /// <summary>The player had unsaved progress. A warning dialog has been shown.</summary>
-            UnsavedProgress,
-
-            /// <summary>The request was made outside of a gameplay scene and was ignored.</summary>
-            NotInGame,
         }
 
         /// <summary>
