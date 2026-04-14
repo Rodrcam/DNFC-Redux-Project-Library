@@ -1,4 +1,5 @@
-using MelonLoader;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace DNFC_Redux_Library
@@ -22,53 +23,82 @@ namespace DNFC_Redux_Library
         /// </summary>
         internal void AttemptInit()
         {
-            InitFetchComponents();
-            InitFetchGameObjects();
+            InitFetchSharedData();
 
             // Only mark initialized if the critical references were found.
             if (Data.SettingsManager != null && Data.CharactersInUse != null)
             {
                 Data.MarkInitialized();
-                MelonLogger.Msg("SharedDataHandler: Initialization successful.");
+                _utility.LogMessage("SharedDataHandler: Initialization successful.");
             }
             else
             {
-                MelonLogger.Msg("SharedDataHandler: Initialization incomplete — one or more required references were not found.");
+                _utility.LogMessage("SharedDataHandler: Initialization incomplete — one or more required references were not found.");
             }
         }
 
-        private void InitFetchComponents()
+        /// <summary>
+        /// Initialize all shared data
+        /// </summary>
+        private void InitFetchSharedData()
         {
-            FindSettingsManagerComponent();
-            FindProgressionCoordinatorComponent();
-        }
+            // A single source to initialize each of the shared data variables.
+            // ( "GameObject Name" "Component Name", Type, Setter Action )
+            var sharedDataContract = new List<(string gameObject, string component, Type expectedType, Action<object> setter)>{
+                ( "PlotsContainer", "", typeof(GameObject), val => Data.PlotsContainer = (GameObject)val),
+                ( "UI_Gameplay/Canvas", "", typeof(GameObject), val => Data.UICanvas = (GameObject)val),
+                ( "CharactersInUse", "", typeof(GameObject),val => Data.CharactersInUse = (GameObject)val),
+                ( "VehiclesInUse", "", typeof(GameObject),val => Data.VehiclesInUse = (GameObject)val),
+                ( "SettingsManager", "SettingsManager", typeof(Component), val => Data.SettingsManager = (Component)val ),
+                ( "Managers", "BalancingData", typeof(Component), val => Data.BalancingData = (Component)val),
+                ( "Managers", "FacilityManager", typeof(Component), val => Data.FacilityManager = (Component)val ),
+                ( "Managers", "TimeManager", typeof(Component), val => Data.TimeManager = (Component)val),
+                ( "Managers", "PlayerTier", typeof(Component), val => Data.PlayerTier = (Component)val),
+                ( "Managers", "DialogueData", typeof(Component), val => Data.DialogueData = (Component)val),
+                ( "Managers", "StoryManager", typeof(Component), val => Data.StoryManager = (Component)val),
+                ( "Managers", "EndGameManager", typeof(Component), val => Data.EndGameManager = (Component)val),
+                ( "Managers", "SpecialClientsCoordinator", typeof(Component), val => Data.SpecialClientsCoordinator = (Component)val ),
+                ( "Managers", "ProgressionClientsCoordinator", typeof(Component), val => Data.ProgressionClientsCoordinator = (Component)val ),
+                ( "Managers", "MonetaryCycle", typeof(Component), val => Data.MonetaryCycle = (Component)val)
+            };
 
-        private void InitFetchGameObjects()
-        {
-            FindCharactersInUse();
-        }
-
-        private void FindSettingsManagerComponent()
-        {
-            if (_utility.TryFetchComponentFromGameObj("SettingsManager", "SettingsManager", out Component component))
+            foreach (var item in sharedDataContract)
             {
-                Data.SettingsManager = component;
+                try
+                {
+                    FetchSharedDataObject(item.gameObject, item.component, item.expectedType, item.setter);
+                }
+                catch (Exception e)
+                {
+                    _utility.LogError($"Error fetching {item.gameObject} {item.component}", e);
+                }
             }
         }
 
-        private void FindProgressionCoordinatorComponent()
+        /// <summary>
+        /// Fetches the specified game object or component and sets the shared data value.
+        /// </summary>
+        /// <param name="gameObjectName">Game Object name</param>
+        /// <param name="componentName">Component name</param>
+        /// <param name="expectedType">Type of the data value object</param>
+        /// <param name="setter">Action delegate to set the data value</param>
+        private void FetchSharedDataObject(string gameObjectName, string componentName, Type expectedType, Action<object> setter)
         {
-            if (_utility.TryFetchComponentFromGameObj("Managers", "ProgressionClientsCoordinator", out Component component))
-            {
-                Data.ProgressionCoordinator = component;
-            }
-        }
+            _utility.LogMessage($"Fetching {gameObjectName} {componentName} for {expectedType.Name}");
 
-        private void FindCharactersInUse()
-        {
-            if (_utility.TryFetchGameObjectFromHierarchy("CharactersInUse", out GameObject gameObject))
+            if (expectedType == typeof(GameObject))
             {
-                Data.CharactersInUse = gameObject;
+                if (_utility.TryFetchGameObjectFromHierarchy(gameObjectName, out GameObject gameObj))
+                {
+                    setter(gameObj);
+                }
+            }
+            else if (typeof(Component).IsAssignableFrom(expectedType))
+            {
+                if (_utility.TryFetchComponentFromGameObj(gameObjectName, componentName, out Component component))
+                {
+                    setter(component);
+                }
             }
         }
     }

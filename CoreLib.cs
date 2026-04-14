@@ -1,7 +1,5 @@
 ﻿using MelonLoader;
-using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 
 namespace DNFC_Redux_Library
 {
@@ -26,7 +24,7 @@ namespace DNFC_Redux_Library
             Utility = new Util();
             _gameState = new SharedDataHandler();
 
-            MelonLogger.Msg(@"
+            Utility.LogMessage(@"
             ___  _  _ ___ ___   ___        _            _    _ _                      
             |   \| \| | __/ __| | _ \___ __| |_  ___ __ | |  (_) |__ _ _ __ _ _ _ _  _ 
             | |) | .` | _| (__  |   / -_) _` | || \ \ / | |__| | '_ \ '_/ _` | '_| || |
@@ -67,11 +65,11 @@ namespace DNFC_Redux_Library
                     break;
 
                 default:
-                    MelonLogger.Msg($"Could not recognize scene: {sceneName}");
+                    Utility.LogMessage($"Could not recognize scene: {sceneName}");
                     break;
             }
 
-            MelonLogger.Msg($"Scene loaded: {sceneName}, state: {_gameState.Data.SceneState}");
+            Utility.LogMessage($"Scene loaded: {sceneName}, state: {_gameState.Data.SceneState}");
         }
 
         /// <summary>
