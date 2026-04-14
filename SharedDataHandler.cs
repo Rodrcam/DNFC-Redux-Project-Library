@@ -62,15 +62,15 @@ namespace DNFC_Redux_Library
                 ( "Managers", "MonetaryCycle", typeof(Component), val => Data.MonetaryCycle = (Component)val)
             };
 
-            foreach (var item in sharedDataContract)
+            foreach (var (gameObject, component, expectedType, setter) in sharedDataContract)
             {
                 try
                 {
-                    FetchSharedDataObject(item.gameObject, item.component, item.expectedType, item.setter);
+                    FetchSharedDataObject(gameObject, component, expectedType, setter);
                 }
                 catch (Exception e)
                 {
-                    _utility.LogError($"Error fetching {item.gameObject} {item.component}", e);
+                    _utility.LogError($"Error fetching {gameObject} {component}", e);
                 }
             }
         }
