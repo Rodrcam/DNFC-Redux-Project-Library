@@ -53,6 +53,9 @@
 		<Reference Include="Il2Cppmscorlib">
 			<HintPath>libs\Il2CppInterop.Runtime.dll</HintPath>
 		</Reference>
+		<Reference Include="Il2Cppmscorlib">
+			<HintPath>libs\UnityEngine.UI.dll</HintPath>
+		</Reference>
     </ItemGroup>
 
     <!-- Include package root files once -->

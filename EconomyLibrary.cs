@@ -7,11 +7,6 @@ namespace DNFC_Redux_Library
     /// </summary>
     public class EconomyLib
     {
-        
-        public EconomyLib()
-        {
-            
-        }
         public readonly Util _utility = CoreLib.Utility;
         public int GetBankBalance()
         {
