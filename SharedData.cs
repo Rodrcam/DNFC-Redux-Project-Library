@@ -29,6 +29,8 @@ namespace DNFC_Redux_Library
         public Component ProgressionClientsCoordinator { get; set; }
         public Component MonetaryCycle { get; set; }
 
+        public static Component BankManager { get; set; }
+
         /// <summary>
         /// Marks the data as successfully initialized.
         /// Only callable from within the library assembly.
